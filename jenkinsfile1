@@ -1,52 +1,47 @@
-pipeline {
-    agent any
-    environment {
-        name = 'malik'
+pipeline{
+    agent{
+        label "node"
     }
-    Parameter {
-        string(name: 'person', defaultValue: 'sarfraj', description: "who are you?")
-    }
+    stages{
+        stage("A"){
+            steps{
+                echo "========executing A========"
+            }
 
-    stages {
-        stage('run a commands') {
-            steps {
-                sh '''
-                ls
-                date
-                pwd
-                '''
+            stage("B"){
+            steps{
+                echo "========executing A========"
+            }
+
+
+            stage("C"){
+            steps{
+                echo "========executing A========"
+            }
+           
+            post{
             
+                always{
+                    echo "========always========"
+                }
+                success{
+                    echo "========A executed successfully========"
+                }
+                failure{
+                    echo "========A execution failed========"
+                }
             }
         }
-        
-        stage('Environment Variable') {
-            steps {
-                sh 'echo "$BUILD_ID"'
-                sh 'echo "$name"'
-                
-            }
+    }
+    post{
+        always{
+            echo "========always========"
         }
-        
-        stage('Environment Variables') {
-            environment {
-                username = 'myname'
-            }
-            
-            steps {
-                sh 'echo "$username"'
-                sh 'echo "$name"'
-            
-            
-            }
+        success{
+            echo "========pipeline executed successfully ========"
         }
-        
-        stage('Parameter') {
-     
-            steps {
-                sh 'echo "$person"'
-                
-            
-            }    
+        failure{
+            echo "========pipeline execution failed========"
         }
     }
 }
